@@ -1,6 +1,8 @@
 package audioplayer.commands.commandsOutput;
 
+import audioplayer.Database;
 import audioplayer.commands.commandsInput.CommandsInput;
+import audioplayer.commands.connection.Check;
 import audioplayer.commands.player.LoadNext;
 import audioplayer.commands.player.Loaders;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,7 +30,7 @@ public final class DoStatus {
      * @param listOfLoaders list of users and what they have in load
      */
     public static void exe(final ObjectNode newN, final CommandsInput inputCommand, final
-    ArrayNode outputs, final ArrayList<Loaders> listOfLoaders) {
+    ArrayNode outputs, final ArrayList<Loaders> listOfLoaders, final Database database) {
         Output.put(newN, "status", inputCommand.getUsername(),
                 inputCommand.getTimestamp());
         ObjectMapper objectMapper = new ObjectMapper();
@@ -67,6 +69,9 @@ public final class DoStatus {
                         }
                         loader.setTimestamp(inputCommand.getTimestamp());
                     }
+                    if (Check.ifOnline(inputCommand, database) == 0) {
+                        loader.getStats().paused = !(loader.getStats().paused);
+                    }
                     Output.status(newS, loader.getStats().getName(), loader.getStats().
                                     getRemainedTime(), loader.getStats().getRepeat(),
                             loader.getStats().shuffle, loader.getStats().paused);
@@ -96,6 +101,9 @@ public final class DoStatus {
                                 }
                             }
                             loader.setTimestamp(inputCommand.getTimestamp());
+                        }
+                        if (Check.ifOnline(inputCommand, database) == 0) {
+                            loader.getStats().paused = !(loader.getStats().paused);
                         }
                         Output.status(newS, loader.getStats().getName(), loader.
                                         getStats().getRemainedTime(), loader.getStats().
@@ -132,15 +140,16 @@ public final class DoStatus {
                                                 // find the next song until remained time > 0
                                                 SongInput nextSong = LoadNext.forPlaylist(loader.
                                                         getPlaylist(), loader.getStats().getName());
-                                                if (nextSong == null) {
+                                                if (nextSong == null && !loader.getPlaylist().
+                                                        getSongs().isEmpty()) {
                                                     // playlists starts from the beginning
                                                     nextSong = loader.getPlaylist().getSongs().
                                                             get(0);
                                                 }
-                                                loader.getStats().setName(nextSong.getName());
-                                                loader.getStats().setRemainedTime(nextSong.
-                                                        getDuration() + loader.getStats().
-                                                        getRemainedTime());
+                                                    loader.getStats().setName(nextSong.getName());
+                                                    loader.getStats().setRemainedTime(nextSong.
+                                                            getDuration() + loader.getStats().
+                                                            getRemainedTime());
                                             }
                                         } else {
                                             if (loader.getStats().getRepeat().
@@ -156,9 +165,11 @@ public final class DoStatus {
                                                     }
                                                 }
                                                 // repeat current song
-                                                loader.getStats().setRemainedTime(loader.getStats().
-                                                        getRemainedTime() + currentSong.
-                                                        getDuration());
+                                                if (currentSong.getDuration() != null) {
+                                                    loader.getStats().setRemainedTime(loader.
+                                                            getStats().getRemainedTime()
+                                                            + currentSong.getDuration());
+                                                }
                                                 // find the next one if remained time < 0
                                                 while (loader.getStats().getRemainedTime() <= 0) {
                                                     SongInput nextSong = LoadNext.forPlaylist(
@@ -182,6 +193,9 @@ public final class DoStatus {
                                     }
                                 }
                                 loader.setTimestamp(inputCommand.getTimestamp());
+                            }
+                            if (Check.ifOnline(inputCommand, database) == 0) {
+                                loader.getStats().paused = !(loader.getStats().paused);
                             }
                             Output.status(newS, loader.getStats().getName(), loader.
                                             getStats().getRemainedTime(), loader.

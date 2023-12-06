@@ -1,4 +1,6 @@
 package audioplayer.commands.commandsOutput;
+import audioplayer.commands.commandsInput.CommandsInput;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -57,6 +59,38 @@ public final class Output {
         node.put("repeat", repeat);
         node.put("shuffle", shuffle);
         node.put("paused", pause);
+    }
+
+    /**
+     *
+     * @param newN
+     * @param inputCommand
+     * @param outputs
+     */
+    public static void doSearch(final ObjectNode newN, final CommandsInput inputCommand, final
+    ArrayNode outputs) {
+        Output.put(newN, "search", inputCommand.getUsername(), inputCommand.getTimestamp());
+        String message = inputCommand.getUsername() + " is offline.";
+        newN.put("message", message);
+        ObjectMapper objectMapper = new ObjectMapper();
+        ArrayNode resultsArray = objectMapper.createArrayNode();
+        newN.put("results", resultsArray);
+        outputs.add(newN);
+    }
+
+    /**
+     *
+     * @param newN
+     * @param inputCommand
+     * @param outputs
+     */
+    public static void doLike(final ObjectNode newN, final CommandsInput inputCommand, final
+    ArrayNode outputs) {
+        Output.put(newN, "like", inputCommand.getUsername(),
+                inputCommand.getTimestamp());
+        String message = inputCommand.getUsername() + " is offline.";
+        newN.put("message", message);
+        outputs.add(newN);
     }
     private Output() {
 

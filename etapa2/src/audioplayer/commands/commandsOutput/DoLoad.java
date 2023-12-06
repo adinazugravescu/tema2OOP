@@ -93,8 +93,8 @@ public final class DoLoad {
                         if (select.getPlaylist() != null && select.getPlaylist().
                                 getName() != null) {
                             StatsForStatus stats = new StatsForStatus(); // initial statistics
-                            if (select.getPlaylist().getSongs().get(0).
-                                    getDuration() != null) {
+                            if (!select.getPlaylist().getSongs().isEmpty() && select.getPlaylist().
+                                    getSongs().get(0).getDuration() != null) {
                                 stats.setRemainedTime(select.getPlaylist().getSongs().
                                         get(0).getDuration());
                                 stats.setName(select.getPlaylist().getSongs().

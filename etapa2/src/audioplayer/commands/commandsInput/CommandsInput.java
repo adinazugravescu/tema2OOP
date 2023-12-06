@@ -1,7 +1,11 @@
 package audioplayer.commands.commandsInput;
 
+import fileio.input.EpisodeInput;
+import fileio.input.SongInput;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
 
 
 /**
@@ -35,4 +39,24 @@ public class CommandsInput {
 
     @Getter @Setter
     private int seed;
+    @Getter @Setter
+    private String nextPage;
+    @Getter @Setter
+    private int age;
+    @Getter @Setter
+    private String city;
+    @Getter @Setter
+    private String description;
+    @Getter @Setter
+    private ArrayList<SongInput> songs;
+    @Getter @Setter
+    private ArrayList<EpisodeInput> episodes;
+    @Getter @Setter
+    private String name;
+    @Getter @Setter
+    private String date;
+    @Getter @Setter
+    private int price;
+    @Getter @Setter
+    private int releaseYear;
 }

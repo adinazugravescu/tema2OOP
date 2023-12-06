@@ -26,4 +26,6 @@ public class Filters {
     private String artist;
     @Getter @Setter
     private String owner;
+    @Getter @Setter
+    private String description;
 }

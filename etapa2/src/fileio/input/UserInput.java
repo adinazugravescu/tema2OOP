@@ -1,11 +1,29 @@
 package fileio.input;
 
+
+import audioplayer.commands.userData.Album;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.ArrayList;
+
 public final class UserInput {
     private String username;
     private int age;
     private String city;
+    @Getter @Setter
+    private String type = "user";
+    @Getter @Setter
+    private ArrayList<Album> albums = new ArrayList<Album>();
+    @Getter @Setter
+    private String currentPage = "HomePage";
 
     public UserInput() {
+    }
+    public UserInput(final UserInput user) {
+        this.username = user.getUsername();
+        this.age = user.getAge();
+        this.city = user.getCity();
     }
 
     public String getUsername() {
@@ -32,3 +50,4 @@ public final class UserInput {
         this.city = city;
     }
 }
+

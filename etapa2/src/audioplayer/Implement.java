@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.input.LibraryInput;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import audioplayer.commands.connection.Check;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,19 +58,26 @@ public class Implement {
         ArrayList<FollowedPlaylists> followedPlaylists = new ArrayList<FollowedPlaylists>();
         // list that stores the loaded podcast stats in case the user reloads them
         ArrayList<PodcastStats> podcastStats = new ArrayList<PodcastStats>();
+        Database database = Database.getInstance();
+        database.setOnlineUsers(library.getUsers());
         for (CommandsInput inputCommand : input) {
             ObjectNode newN = objectMapper.createObjectNode();
             switch (inputCommand.getCommand()) {
                 case "search" -> {
-                    // remove
-                    // when a user command is 'search', we do not need to keep track of
-                    // its search results, what was selected/loaded, but(if a podcast was loaded)
-                    // we need to remember the statistics for it in case of a future load
-                    // (in podcastStats)
-                    DoSearch.remove(inputCommand, listOfResults, listOfLoaders, listOfSelectors,
-                            podcastStats);
-                    DoSearch.exe(newN, inputCommand, library, outputs, listOfResults,
-                            playlistOwners);
+                    if (Check.ifOnline(inputCommand, database) == 1) {
+                        // remove
+                        // when a user command is 'search', we do not need to keep track of
+                        // its search results, what was selected/loaded, but(if podcast was loaded)
+                        // we need to remember the statistics for it in case of a future load
+                        // (in podcastStats)
+                        DoSearch.remove(inputCommand, listOfResults, listOfLoaders, listOfSelectors,
+                                podcastStats);
+                        DoSearch.exe(newN, inputCommand, library, outputs, listOfResults,
+                                playlistOwners);
+                    } else {
+                        //FailedConnection.doSearch(newN, inputCommand, outputs);
+                        Output.doSearch(newN, inputCommand, outputs);
+                    }
                 }
                 case "select" -> {
                     DoSelect.exe(newN, inputCommand, outputs, listOfResults, listOfSelectors);
@@ -82,7 +90,7 @@ public class Implement {
                     DoPlayPause.exe(newN, inputCommand, outputs, listOfLoaders);
                 }
                 case "status" -> {
-                    DoStatus.exe(newN, inputCommand, outputs, listOfLoaders);
+                        DoStatus.exe(newN, inputCommand, outputs, listOfLoaders, database);
                 }
                 case "createPlaylist" -> {
                     DoCreatePlaylist.exe(newN, inputCommand, outputs, playlistOwners);
@@ -91,7 +99,12 @@ public class Implement {
                     DoAddRemove.exe(newN, inputCommand, outputs, listOfLoaders, playlistOwners);
                 }
                 case "like" -> {
-                    DoLike.exe(newN, inputCommand, outputs, listOfLoaders, prefferedSongs);
+                    if (Check.ifOnline(inputCommand, database) == 1) {
+                        DoLike.exe(newN, inputCommand, outputs, listOfLoaders, prefferedSongs);
+                    } else {
+                        //FailedConnection.doLike(newN, inputCommand, outputs);
+                        Output.doLike(newN, inputCommand, outputs);
+                    }
                 }
                 case "showPreferredSongs" -> {
                     DoShowPreferredSongs.exe(newN, inputCommand, outputs, prefferedSongs);
@@ -128,6 +141,26 @@ public class Implement {
                 }
                 case ("shuffle") -> {
                     DoShuffle.exe(newN, inputCommand, outputs, listOfLoaders, initialPlaylists);
+                }
+                case ("switchConnectionStatus") -> {
+                    DoSwitchConnectionStatus.exe(newN, inputCommand, outputs, library, database,
+                            listOfLoaders);
+                }
+                case ("getOnlineUsers") -> {
+                    DoGetOnlineUsers.exe(newN, inputCommand, outputs, database);
+                }
+                case ("addUser") -> {
+                    DoAddUser.exe(newN, inputCommand, outputs, library);
+                }
+                case ("addAlbum") -> {
+                    DoAddAlbum.exe(newN, inputCommand, outputs, library);
+                }
+                case ("showAlbums") -> {
+                    DoShowAlbums.exe(newN, inputCommand, outputs, library);
+                }
+                case ("printCurrentPage") -> {
+                    DoPrintCurrentPage.exe(newN, inputCommand, outputs, prefferedSongs,
+                            followedPlaylists, library);
                 }
                 default -> {
                     continue;

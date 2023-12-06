@@ -26,6 +26,5 @@ public final class Select {
         return "The selected ID is too high.";
     }
     private Select() {
-        
     }
 }

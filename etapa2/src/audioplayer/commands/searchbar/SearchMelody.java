@@ -103,11 +103,19 @@ public class SearchMelody extends SearchBar {
                     }
                 }
             } else {
-                for (SongInput song : filteredSongs) {
+                /*for (SongInput song : filteredSongs) {
                     String str1 = song.getGenre();
                     str1 = str1.toLowerCase();
                     if (!str1.equals(this.getFilters().getGenre())) {
                         filteredSongs.remove(song);
+                    }
+                } */
+                Iterator<SongInput> iterator = filteredSongs.iterator();
+                while (iterator.hasNext()) {
+                    SongInput song = iterator.next();
+                    String str1 = song.getGenre().toLowerCase();
+                    if (!str1.equals(this.getFilters().getGenre())) {
+                        iterator.remove();
                     }
                 }
             }

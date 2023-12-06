@@ -87,7 +87,7 @@ public final class DoShuffle {
             message = "Please load a source before using the shuffle function.";
         } else {
             if (isPlaylist == 0) {
-                message = "The loaded source is not a playlist.";
+                message = "The loaded source is not a playlist or an album.";
             }
         }
         newN.put("message", message);

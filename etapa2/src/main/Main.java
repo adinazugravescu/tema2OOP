@@ -79,7 +79,7 @@ public final class Main {
         ObjectMapper objectCommandsMapper = new ObjectMapper();
         List<CommandsInput>  commandsInput = objectCommandsMapper.readValue(new File(
                 CheckerConstants.TESTS_PATH + filePathInput),
-                new TypeReference<List<CommandsInput>>() {});
+                new TypeReference<List<CommandsInput>>() { });
         Implement implement = new Implement(library, commandsInput, outputs);
         implement.exe();
         ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
