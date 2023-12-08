@@ -7,7 +7,6 @@ import audioplayer.commands.player.Loaders;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.input.EpisodeInput;
-import fileio.input.LibraryInput;
 import audioplayer.Database;
 import fileio.input.SongInput;
 import fileio.input.UserInput;
@@ -24,12 +23,11 @@ public final class DoSwitchConnectionStatus {
      * @param newN
      * @param inputCommand
      * @param outputs
-     * @param library
      * @param database
      * @param listOfLoaders
      */
     public static void exe(final ObjectNode newN, final CommandsInput inputCommand, final
-    ArrayNode outputs, final LibraryInput library, final Database database, final
+    ArrayNode outputs, final Database database, final
                            ArrayList<Loaders> listOfLoaders) {
         Output.put(newN, "switchConnectionStatus", inputCommand.getUsername(),
                 inputCommand.getTimestamp());
@@ -131,7 +129,7 @@ public final class DoSwitchConnectionStatus {
             }
         }
         if (isOnline == 0) {
-            for (UserInput user : library.getUsers()) {
+            for (UserInput user : database.getLibrary().getUsers()) {
                 if (inputCommand.getUsername().equals(user.getUsername())) {
                     exists = 1;
                     message = user.getUsername() + " has changed status successfully.";

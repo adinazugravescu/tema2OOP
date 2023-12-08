@@ -2,15 +2,13 @@ package audioplayer.commands.commandsOutput;
 
 import audioplayer.Database;
 import audioplayer.commands.commandsInput.CommandsInput;
-import audioplayer.commands.userData.Album;
-import audioplayer.commands.userData.Verification;
+import audioplayer.commands.userData.Merch;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import fileio.input.SongInput;
 import fileio.input.UserInput;
 
-public final class DoAddAlbum {
-    private DoAddAlbum() {
+public final class DoAddMerch {
+    private DoAddMerch() {
     }
 
     /**
@@ -22,9 +20,15 @@ public final class DoAddAlbum {
      */
     public static void exe(final ObjectNode newN, final CommandsInput inputCommand, final
     ArrayNode outputs, final Database database) {
-        Output.put(newN, "addAlbum", inputCommand.getUsername(),
+        Output.put(newN, "addMerch", inputCommand.getUsername(),
                 inputCommand.getTimestamp());
         String message = "";
+        if (inputCommand.getPrice() < 0) {
+            message = "Price for merchandise can not be negative.";
+            newN.put("message", message);
+            outputs.add(newN);
+            return;
+        }
         int exists = 0; // auxiliary field that retains if specified user exists
         int isArtist = 0; // auxiliary field that retains if specified user is an artist
         for (UserInput user : database.getLibrary().getUsers()) {
@@ -32,32 +36,21 @@ public final class DoAddAlbum {
                 exists = 1;
                 if (user.getType().equals("artist")) {
                     isArtist = 1;
-                    for (Album album : user.getAlbums()) {
-                        if (album.getName().equals(inputCommand.getName())) {
-                            message = inputCommand.getUsername() + " has another album with "
+                    for (Merch merch : user.getMerches()) {
+                        if (inputCommand.getName().equals(merch.getName())) {
+                            message = inputCommand.getUsername() + " has merchandise with "
                                     + "the same name.";
                             newN.put("message", message);
                             outputs.add(newN);
                             return;
                         }
                     }
-                    // check for more than 2 songs in inputCommand
-                    if (Verification.song(inputCommand.getSongs())) {
-                        message = inputCommand.getUsername() + " has the same song at least twice "
-                                + "in this album.";
-                    } else {
-                        // add the album
-                        // first create it
-                        Album newAlbum = new Album(inputCommand.getName(), inputCommand.
-                                getReleaseYear(), inputCommand.getDescription(), inputCommand.
-                                getSongs(), inputCommand.getUsername());
-                        user.getAlbums().add(newAlbum);
-                        message = inputCommand.getUsername()
-                                + " has added new album successfully.";
-                        for (SongInput song : inputCommand.getSongs()) {
-                            database.getLibrary().getSongs().add(song); // addnew songs in library
-                        }
-                    }
+                    // all conditions verified, create and add event
+                    Merch newMerch = new Merch(inputCommand.getName(), inputCommand.
+                            getDescription(), inputCommand.getPrice());
+                    user.getMerches().add(newMerch);
+                    message = inputCommand.getUsername() + " has added new merchandise "
+                            + "successfully.";
                     break;
                 }
             }

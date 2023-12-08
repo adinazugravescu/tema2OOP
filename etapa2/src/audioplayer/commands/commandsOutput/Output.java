@@ -84,9 +84,9 @@ public final class Output {
      * @param inputCommand
      * @param outputs
      */
-    public static void doLike(final ObjectNode newN, final CommandsInput inputCommand, final
+    public static void doOffline(final ObjectNode newN, final CommandsInput inputCommand, final
     ArrayNode outputs) {
-        Output.put(newN, "like", inputCommand.getUsername(),
+        Output.put(newN, inputCommand.getCommand(), inputCommand.getUsername(),
                 inputCommand.getTimestamp());
         String message = inputCommand.getUsername() + " is offline.";
         newN.put("message", message);

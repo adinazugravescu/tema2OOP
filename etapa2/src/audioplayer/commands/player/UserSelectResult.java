@@ -1,6 +1,7 @@
 package audioplayer.commands.player;
 
 import audioplayer.commands.playlist.Playlist;
+import audioplayer.commands.userData.Album;
 import fileio.input.PodcastInput;
 import fileio.input.SongInput;
 import lombok.Getter;
@@ -19,5 +20,7 @@ public class UserSelectResult {
     private PodcastInput podcast = new PodcastInput();
     @Getter @Setter
     private Playlist playlist = new Playlist();
+    @Getter @Setter
+    private Album album = new Album();
 
 }

@@ -25,11 +25,14 @@ public class Playlist {
     private ArrayList<SongInput> songs;
     @Getter @Setter
     private ArrayList<EpisodeInput> episodes;
-    public Playlist(final String n, final String o) {
+    @Getter @Setter
+    private int timestamp;
+    public Playlist(final String n, final String o, final int t) {
         this.name = n;
         this.owner = o;
         this.songs = new ArrayList<>();
         this.episodes = new ArrayList<>();
+        this.timestamp = t;
     }
     public Playlist() {
 

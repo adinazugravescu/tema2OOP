@@ -8,7 +8,6 @@ import fileio.input.SongInput;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 
 public class GetTop5Songs {
@@ -45,7 +44,16 @@ public class GetTop5Songs {
                               final ArrayList<SongInput> songs) {
        ArrayNode resultsArray = objectMapper.createArrayNode();
         List<Map.Entry<SongInput, Integer>> list = new ArrayList<>(likedSongs.entrySet());
-        list.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+        list.sort((entry1, entry2) -> {
+            int comparison = entry2.getValue().compareTo(entry1.getValue()); // in reverse order
+            if (comparison != 0) {
+                return comparison; // if values are different, return the comparison result
+            } else {
+                // if values are the same, maintain the original order in the list
+                return Integer.compare(list.indexOf(entry1), list.indexOf(entry2));
+            }
+        });
+
         int count = 0;
         for (Map.Entry<SongInput, Integer> entry : list) {
             if (count < Constants.getFive()) {

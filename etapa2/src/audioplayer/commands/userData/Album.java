@@ -15,11 +15,16 @@ public class Album {
     private int releaseYear;
     @Getter @Setter
     private String description;
+    @Getter @Setter
+    private String owner;
+    public Album() {
+    }
     public Album(final String n, final int release, final String d,
-                 final ArrayList<SongInput> s) {
+                 final ArrayList<SongInput> s, final String o) {
         this.name = n;
         this.releaseYear = release;
         this.description = d;
         this.songs = s;
+        this.owner = o;
     }
 }

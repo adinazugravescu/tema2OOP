@@ -59,8 +59,8 @@ public final class DoLike {
                         prefferedSongs.add(newP);
                     }
                 } else {
-                    if (loader.getPlaylist().getSongs() != null && loader.
-                            getPlaylist().getName() != null) {
+                    if (loader.getPlaylist() != null && loader.getPlaylist().getSongs() != null
+                            && loader.getPlaylist().getName() != null) {
                         load++;
                         int userHasPreffered = 0;
                         for (PreferredSongs pref : prefferedSongs) {

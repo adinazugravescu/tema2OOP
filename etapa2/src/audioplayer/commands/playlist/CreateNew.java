@@ -16,7 +16,8 @@ public final class CreateNew {
                              final ArrayList<PlaylistOwners> playlistOwners,
                              final ObjectNode newN) {
         PlaylistOwners newP = new PlaylistOwners();
-        Playlist play = new Playlist(inputCommand.getPlaylistName(), inputCommand.getUsername());
+        Playlist play = new Playlist(inputCommand.getPlaylistName(), inputCommand.getUsername(),
+                inputCommand.getTimestamp());
         newP.getPlaylists().add(play);
         newP.setOwner(inputCommand.getUsername());
         playlistOwners.add(newP);
@@ -31,7 +32,8 @@ public final class CreateNew {
      */
     public static void playlist(final CommandsInput inputCommand, final PlaylistOwners crt,
                                 final ObjectNode newN) {
-        Playlist play = new Playlist(inputCommand.getPlaylistName(), inputCommand.getUsername());
+        Playlist play = new Playlist(inputCommand.getPlaylistName(), inputCommand.getUsername(),
+                inputCommand.getTimestamp());
         crt.getPlaylists().add(play);
         newN.put("message", "Playlist created successfully.");
     }

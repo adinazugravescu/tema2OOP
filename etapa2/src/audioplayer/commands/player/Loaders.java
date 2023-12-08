@@ -1,6 +1,7 @@
 package audioplayer.commands.player;
 
 import audioplayer.commands.playlist.Playlist;
+import audioplayer.commands.userData.Album;
 import fileio.input.PodcastInput;
 import fileio.input.SongInput;
 import lombok.Getter;
@@ -21,6 +22,8 @@ public class Loaders {
     private PodcastInput podcast = null;
     @Getter @Setter
     private Playlist playlist = null;
+    @Getter @Setter
+    private Album album = null;
     @Getter @Setter
     private StatsForStatus stats;
     public Loaders(final String u, final int t) {

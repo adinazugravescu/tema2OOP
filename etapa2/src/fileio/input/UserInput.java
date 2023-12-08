@@ -2,6 +2,8 @@ package fileio.input;
 
 
 import audioplayer.commands.userData.Album;
+import audioplayer.commands.userData.Event;
+import audioplayer.commands.userData.Merch;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +19,12 @@ public final class UserInput {
     private ArrayList<Album> albums = new ArrayList<Album>();
     @Getter @Setter
     private String currentPage = "HomePage";
+    @Getter @Setter
+    private UserInput usersPage = this;
+    @Getter @Setter
+    private ArrayList<Event> events = new ArrayList<Event>();
+    @Getter @Setter
+    private ArrayList<Merch> merches = new ArrayList<Merch>();
 
     public UserInput() {
     }

@@ -58,8 +58,10 @@ public class Implement {
         ArrayList<FollowedPlaylists> followedPlaylists = new ArrayList<FollowedPlaylists>();
         // list that stores the loaded podcast stats in case the user reloads them
         ArrayList<PodcastStats> podcastStats = new ArrayList<PodcastStats>();
+        // database implementation
         Database database = Database.getInstance();
         database.setOnlineUsers(library.getUsers());
+        database.setLibrary(library);
         for (CommandsInput inputCommand : input) {
             ObjectNode newN = objectMapper.createObjectNode();
             switch (inputCommand.getCommand()) {
@@ -72,15 +74,15 @@ public class Implement {
                         // (in podcastStats)
                         DoSearch.remove(inputCommand, listOfResults, listOfLoaders, listOfSelectors,
                                 podcastStats);
-                        DoSearch.exe(newN, inputCommand, library, outputs, listOfResults,
-                                playlistOwners);
+                        DoSearch.exe(newN, inputCommand, database.getLibrary(), outputs,
+                                listOfResults, playlistOwners);
                     } else {
-                        //FailedConnection.doSearch(newN, inputCommand, outputs);
                         Output.doSearch(newN, inputCommand, outputs);
                     }
                 }
                 case "select" -> {
-                    DoSelect.exe(newN, inputCommand, outputs, listOfResults, listOfSelectors);
+                    DoSelect.exe(newN, inputCommand, outputs, listOfResults, listOfSelectors,
+                            database);
                 }
                 case "load" -> {
                     DoLoad.exe(newN, inputCommand, outputs, listOfSelectors, listOfLoaders,
@@ -102,8 +104,7 @@ public class Implement {
                     if (Check.ifOnline(inputCommand, database) == 1) {
                         DoLike.exe(newN, inputCommand, outputs, listOfLoaders, prefferedSongs);
                     } else {
-                        //FailedConnection.doLike(newN, inputCommand, outputs);
-                        Output.doLike(newN, inputCommand, outputs);
+                        Output.doOffline(newN, inputCommand, outputs);
                     }
                 }
                 case "showPreferredSongs" -> {
@@ -122,7 +123,7 @@ public class Implement {
                     DoGetTop5Playlists.exe(newN, inputCommand, outputs, playlistOwners);
                 }
                 case ("getTop5Songs") -> {
-                    DoGetTop5Songs.exe(newN, inputCommand, library, outputs, prefferedSongs);
+                    DoGetTop5Songs.exe(newN, inputCommand, database, outputs, prefferedSongs);
                 }
                 case ("next") -> {
                     DoNext.exe(newN, inputCommand, outputs, listOfLoaders);
@@ -143,24 +144,44 @@ public class Implement {
                     DoShuffle.exe(newN, inputCommand, outputs, listOfLoaders, initialPlaylists);
                 }
                 case ("switchConnectionStatus") -> {
-                    DoSwitchConnectionStatus.exe(newN, inputCommand, outputs, library, database,
+                    DoSwitchConnectionStatus.exe(newN, inputCommand, outputs, database,
                             listOfLoaders);
                 }
                 case ("getOnlineUsers") -> {
                     DoGetOnlineUsers.exe(newN, inputCommand, outputs, database);
                 }
                 case ("addUser") -> {
-                    DoAddUser.exe(newN, inputCommand, outputs, library);
+                    DoAddUser.exe(newN, inputCommand, outputs, database);
                 }
                 case ("addAlbum") -> {
-                    DoAddAlbum.exe(newN, inputCommand, outputs, library);
+                    DoAddAlbum.exe(newN, inputCommand, outputs, database);
                 }
                 case ("showAlbums") -> {
-                    DoShowAlbums.exe(newN, inputCommand, outputs, library);
+                    DoShowAlbums.exe(newN, inputCommand, outputs, database);
                 }
                 case ("printCurrentPage") -> {
-                    DoPrintCurrentPage.exe(newN, inputCommand, outputs, prefferedSongs,
-                            followedPlaylists, library);
+                    if (Check.ifOnline(inputCommand, database) == 1) {
+                        DoPrintCurrentPage.exe(newN, inputCommand, outputs, prefferedSongs,
+                                followedPlaylists, database);
+                    } else {
+                        Output.doOffline(newN, inputCommand, outputs);
+                    }
+                }
+                case ("addEvent") -> {
+                    DoAddEvent.exe(newN, inputCommand, outputs, database);
+                }
+                case ("addMerch") -> {
+                    DoAddMerch.exe(newN, inputCommand, outputs, database);
+                }
+                case ("getTop5Albums") -> {
+                    DoGetTop5Albums.exe(newN, inputCommand, outputs, database, prefferedSongs);
+                }
+                case ("getAllUsers") -> {
+                    DoGetAllUsers.exe(newN, inputCommand, outputs, database);
+                }
+                case ("deleteUser") -> {
+                    DoDeleteUser.exe(newN, inputCommand, outputs, database, listOfLoaders,
+                            prefferedSongs);
                 }
                 default -> {
                     continue;

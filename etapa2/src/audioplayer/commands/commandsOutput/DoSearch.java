@@ -7,15 +7,15 @@ import audioplayer.commands.player.UserSearchResult;
 import audioplayer.commands.player.UserSelectResult;
 import audioplayer.commands.playlist.Playlist;
 import audioplayer.commands.playlist.PlaylistOwners;
-import audioplayer.commands.searchbar.SearchMelody;
-import audioplayer.commands.searchbar.SearchPlaylist;
-import audioplayer.commands.searchbar.SearchPodcast;
+import audioplayer.commands.searchbar.*;
+import audioplayer.commands.userData.Album;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.input.LibraryInput;
 import fileio.input.PodcastInput;
 import fileio.input.SongInput;
+import fileio.input.UserInput;
 
 import java.util.ArrayList;
 
@@ -90,6 +90,35 @@ public final class DoSearch {
             UserSearchResult current = new UserSearchResult(
                     inputCommand.getUsername(), searchbar.getNumberOfOc());
             current.setListOfplaylists(searchbar.getResults());
+            listOfResults.add(current);
+        } else if (inputCommand.getType().equals("artist")) {
+            SearchArtist searchbar = new SearchArtist(inputCommand.getFilters(),
+                    library.getUsers());
+            searchbar.search();
+            ArrayNode resultsArray = objectMapper.createArrayNode();
+            for (UserInput results : searchbar.getResults()) {
+                resultsArray.add(results.getUsername());
+            }
+            Output.search(newN, searchbar.message(), resultsArray); // complete the ObjectNode with
+                                                                    // the info in searchbar
+            outputs.add(newN);
+            UserSearchResult current = new UserSearchResult(
+                    inputCommand.getUsername(), searchbar.getNumberOfOc());
+            current.setListOfusers(searchbar.getResults());
+            listOfResults.add(current);
+        } else if (inputCommand.getType().equals("album")) {
+            SearchAlbum searchbar = new SearchAlbum(inputCommand.getFilters(), library);
+            searchbar.search();
+            ArrayNode resultsArray = objectMapper.createArrayNode();
+            for (Album results : searchbar.getResults()) {
+                resultsArray.add(results.getName());
+            }
+            Output.search(newN, searchbar.message(), resultsArray); // complete the ObjectNode with
+            // the info in searchbar
+            outputs.add(newN);
+            UserSearchResult current = new UserSearchResult(
+                    inputCommand.getUsername(), searchbar.getNumberOfOc());
+            current.setListOfalbums(searchbar.getResults());
             listOfResults.add(current);
         }
     }

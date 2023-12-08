@@ -116,6 +116,33 @@ public final class DoLoad {
                             listOfLoaders.add(loader);
                             newN.put("message", Load.message1());
                             listOfSelectors.remove(select);
+                        } else {
+                            if (select.getAlbum() != null && select.getAlbum().getName() != null) {
+                                StatsForStatus stats = new StatsForStatus(); // initial statistics
+                                if (!select.getAlbum().getSongs().isEmpty() && select.getAlbum().
+                                        getSongs().get(0).getDuration() != null) {
+                                    stats.setRemainedTime(select.getAlbum().getSongs().
+                                            get(0).getDuration());
+                                    stats.setName(select.getAlbum().getSongs().
+                                            get(0).getName());
+                                }
+                                stats.setRepeat("No Repeat");
+                                stats.setShuffle(false);
+                                stats.setPaused(false);
+                                Loaders loader = new Loaders(inputCommand.getUsername(),
+                                        inputCommand.getTimestamp());
+                                loader.setAlbum(select.getAlbum());
+                                loader.setStats(stats);
+                                for (Loaders l : listOfLoaders) { // removes if it exists already
+                                    if (l.getUsername().equals(inputCommand.
+                                            getUsername())) {
+                                        listOfLoaders.remove(l);
+                                    }
+                                }
+                                listOfLoaders.add(loader);
+                                newN.put("message", Load.message1());
+                                listOfSelectors.remove(select);
+                            }
                         }
                     }
                 }

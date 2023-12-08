@@ -25,6 +25,15 @@ public final class Select {
     public static String message3() {
         return "The selected ID is too high.";
     }
+
+    /**
+     *
+     * @param name
+     * @return
+     */
+    public static String message4(final String name) {
+        return "Successfully selected " + name + "'s page.";
+    }
     private Select() {
     }
 }

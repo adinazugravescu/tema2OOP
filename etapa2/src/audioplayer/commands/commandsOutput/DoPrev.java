@@ -1,6 +1,7 @@
 package audioplayer.commands.commandsOutput;
 
 import audioplayer.commands.commandsInput.CommandsInput;
+import audioplayer.commands.player.LoadNext;
 import audioplayer.commands.player.LoadPrev;
 import audioplayer.commands.player.Loaders;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -69,6 +70,47 @@ public final class DoPrev {
                                 message = "Returned to previous track successfully. The "
                                         + "current track is " + prevEpisode.getName() + ".";
                                 loader.setTimestamp(inputCommand.getTimestamp());
+                            }
+                        } else {
+                            if (loader.getAlbum() != null) {
+                                if (!loader.getStats().paused) { // find the current track
+                                    loader.getStats().setRemainedTime(loader.getStats().
+                                            getRemainedTime() - inputCommand.getTimestamp()
+                                            + loader.getTimestamp()); //update timestamp
+                                    if (loader.getStats().getRemainedTime() <= 0) {
+                                        // song finished, look for the next one
+                                        while (loader.getStats().getRemainedTime() <= 0) {
+                                            SongInput nextSong = LoadNext.forAlbum(loader.
+                                                    getAlbum(), loader.getStats().getName());
+                                            if (nextSong != null) {
+                                                loader.getStats().setName(nextSong.getName());
+                                                loader.getStats().setRemainedTime(nextSong.
+                                                        getDuration() + loader.getStats().
+                                                        getRemainedTime());
+                                            } else {
+                                                // album finished
+                                                loader.getStats().setRemainedTime(0);
+                                                loader.getStats().setName("");
+                                                loader.getStats().paused = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                                // depending on time passed since the load, we find prevSong
+                                int passedTime = inputCommand.getTimestamp() - loader.
+                                        getTimestamp();
+                                SongInput prevSong = LoadPrev.forAlbum(loader.getAlbum(),
+                                        loader.getStats().getName(), passedTime);
+                                if (prevSong != null) {
+                                    loader.getStats().setName(prevSong.getName());
+                                    loader.getStats().setRemainedTime(prevSong.getDuration());
+                                    message = "Returned to previous track successfully. The "
+                                            + "current track is " + prevSong.getName() + ".";
+                                    loader.setTimestamp(inputCommand.getTimestamp());
+                                } else {
+                                    message = "IDK";
+                                }
                             }
                         }
                     }

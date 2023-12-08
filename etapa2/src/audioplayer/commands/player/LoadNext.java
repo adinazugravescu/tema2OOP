@@ -4,6 +4,7 @@ import audioplayer.commands.playlist.Playlist;
 import fileio.input.EpisodeInput;
 import fileio.input.PodcastInput;
 import fileio.input.SongInput;
+import audioplayer.commands.userData.Album;
 
 public final class LoadNext {
     private LoadNext() {
@@ -38,6 +39,23 @@ public final class LoadNext {
             if (playlist.getSongs().get(i).getName().equals(name)) {
                 if (i < playlist.getSongs().size() - 1) {
                     return playlist.getSongs().get(i + 1);
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param album
+     * @param name
+     * @return
+     */
+    public static SongInput forAlbum(final Album album, final String name) {
+        for (int i = 0; i < album.getSongs().size(); i++) {
+            if (album.getSongs().get(i).getName().equals(name)) {
+                if (i < album.getSongs().size() - 1) {
+                    return album.getSongs().get(i + 1);
                 }
             }
         }

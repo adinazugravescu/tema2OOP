@@ -9,7 +9,12 @@ public final class LibraryInput {
 
     public LibraryInput() {
     }
-
+    public LibraryInput(final ArrayList<SongInput> songs, final ArrayList<PodcastInput> podcasts,
+                        final ArrayList<UserInput> users) {
+        this.songs = songs;
+        this.podcasts = podcasts;
+        this.users = users;
+    }
     public ArrayList<SongInput> getSongs() {
         return songs;
     }

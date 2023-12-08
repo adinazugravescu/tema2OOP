@@ -17,7 +17,15 @@ public class StatsForStatus {
     public boolean shuffle;
     @Getter @Setter
     public boolean paused;
-
+    public StatsForStatus(final StatsForStatus copy) {
+        this.name = copy.getName();
+        this.remainedTime = copy.getRemainedTime();
+        this.repeat = copy.getRepeat();
+        this.shuffle = copy.isShuffle();
+        this.paused = copy.isPaused();
+    }
+    public StatsForStatus() {
+    }
     @Override
     public final String toString() {
         return  "name='" + name + '\''

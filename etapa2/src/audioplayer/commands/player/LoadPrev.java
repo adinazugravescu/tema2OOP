@@ -1,6 +1,7 @@
 package audioplayer.commands.player;
 
 import audioplayer.commands.playlist.Playlist;
+import audioplayer.commands.userData.Album;
 import fileio.input.EpisodeInput;
 import fileio.input.PodcastInput;
 import fileio.input.SongInput;
@@ -54,6 +55,31 @@ public final class LoadPrev {
                     }
                 } else {
                     return playlist.getSongs().get(0);
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param album
+     * @param name
+     * @param passedTime
+     * @return
+     */
+    public static SongInput forAlbum(final Album album, final String name,
+                                     final int passedTime) {
+        for (int i = 0; i < album.getSongs().size(); i++) {
+            if (album.getSongs().get(i).getName().equals(name)) {
+                if (i > 0) {
+                    if (passedTime > 0) {
+                        return album.getSongs().get(i);
+                    } else {
+                        return album.getSongs().get(i - 1);
+                    }
+                } else {
+                    return album.getSongs().get(0);
                 }
             }
         }

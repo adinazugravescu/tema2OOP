@@ -1,7 +1,9 @@
 package audioplayer;
 
+import fileio.input.LibraryInput;
 import fileio.input.UserInput;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
@@ -9,6 +11,8 @@ public final class Database {
     private static Database instance = null;
     @Getter
     private ArrayList<UserInput> onlineUsers = new ArrayList<UserInput>();
+    @Getter @Setter
+    private LibraryInput library = new LibraryInput();
 
     /**
      *

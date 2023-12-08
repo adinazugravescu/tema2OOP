@@ -1,7 +1,9 @@
 package audioplayer.commands.player;
 import audioplayer.commands.playlist.Playlist;
+import audioplayer.commands.userData.Album;
 import fileio.input.PodcastInput;
 import fileio.input.SongInput;
+import fileio.input.UserInput;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +23,10 @@ public class UserSearchResult {
     private ArrayList<PodcastInput> listOfpodcasts = new ArrayList<>();
     @Getter @Setter
     private ArrayList<Playlist> listOfplaylists = new ArrayList<>();
+    @Getter @Setter
+    private ArrayList<UserInput> listOfusers = new ArrayList<UserInput>();
+    @Getter @Setter
+    private ArrayList<Album> listOfalbums = new ArrayList<Album>();
     public UserSearchResult(final String u, final int n) {
         this.username = u;
         this.numberOfResults = n;
@@ -41,7 +47,15 @@ public class UserSearchResult {
             if (!listOfpodcasts.isEmpty()) {
                 return listOfpodcasts.get(index).getName();
             } else {
-                return listOfplaylists.get(index).getName();
+                if (!listOfplaylists.isEmpty()) {
+                    return listOfplaylists.get(index).getName();
+                } else {
+                    if (!listOfusers.isEmpty()) {
+                        return listOfusers.get(index).getUsername();
+                    } else {
+                        return listOfalbums.get(index).getName();
+                    }
+                }
             }
         }
     }

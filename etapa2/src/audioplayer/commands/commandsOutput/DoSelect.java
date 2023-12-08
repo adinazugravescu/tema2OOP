@@ -1,11 +1,13 @@
 package audioplayer.commands.commandsOutput;
 
+import audioplayer.Database;
 import audioplayer.commands.commandsInput.CommandsInput;
 import audioplayer.commands.player.UserSearchResult;
 import audioplayer.commands.player.UserSelectResult;
 import audioplayer.commands.searchbar.Select;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import fileio.input.UserInput;
 
 import java.util.ArrayList;
 
@@ -28,7 +30,8 @@ public final class DoSelect {
      */
     public static void exe(final ObjectNode newN, final CommandsInput inputCommand, final ArrayNode
                             outputs, final ArrayList<UserSearchResult> listOfResults,
-                           final ArrayList<UserSelectResult> listOfSelectors) {
+                           final ArrayList<UserSelectResult> listOfSelectors, final
+                           Database database) {
         Output.put(newN, "select", inputCommand.getUsername(), inputCommand.getTimestamp());
         int aux = 0;
         UserSearchResult crt = new UserSearchResult();
@@ -48,10 +51,12 @@ public final class DoSelect {
             Output.select(newN, Select.message3());
         } else {
             // we retain the select info in a new UserSelectResult object
-            Output.select(newN, Select.message1(crt.nameOfResult(
-                    inputCommand.getItemNumber() - 1)));
             UserSelectResult newSelect = new UserSelectResult();
-            newSelect.setUsername(inputCommand.getUsername());
+            if (crt.getListOfusers().isEmpty()) {
+                Output.select(newN, Select.message1(crt.nameOfResult(
+                        inputCommand.getItemNumber() - 1)));
+                newSelect.setUsername(inputCommand.getUsername());
+            }
             if (!crt.getListOfsongs().isEmpty()) {
                 newSelect.setSong(crt.getListOfsongs().get(inputCommand.getItemNumber()
                         - 1));
@@ -60,11 +65,35 @@ public final class DoSelect {
                     newSelect.setPodcast(crt.getListOfpodcasts().get(
                             inputCommand.getItemNumber() - 1));
                 } else {
-                    newSelect.setPlaylist(crt.getListOfplaylists().get(
-                            inputCommand.getItemNumber() - 1));
+                    if (!crt.getListOfplaylists().isEmpty()) {
+                        newSelect.setPlaylist(crt.getListOfplaylists().get(
+                                inputCommand.getItemNumber() - 1));
+                    } else {
+                        if (!crt.getListOfusers().isEmpty()) {
+                            for (UserInput user : database.getLibrary().getUsers()) {
+                                if (user.getUsername().equals(inputCommand.getUsername())) {
+                                    if (crt.getListOfusers().get(inputCommand.getItemNumber() - 1).
+                                            getType().equals("artist")) {
+                                        user.setCurrentPage("Artist page");
+                                        user.setUsersPage(crt.getListOfusers().
+                                                get(inputCommand.getItemNumber() - 1));
+                                        Output.select(newN, Select.message4(crt.nameOfResult(
+                                                inputCommand.getItemNumber() - 1)));
+                                    }
+                                }
+                            }
+                        } else {
+                            if (!crt.getListOfalbums().isEmpty()) {
+                                newSelect.setAlbum(crt.getListOfalbums().get(inputCommand.
+                                        getItemNumber() - 1));
+                            }
+                        }
+                    }
                 }
             }
-            listOfSelectors.add(newSelect);
+            if (crt.getListOfusers().isEmpty()) {
+                listOfSelectors.add(newSelect);
+            }
             listOfResults.remove(crt);
         }
         outputs.add(newN);

@@ -4,7 +4,7 @@ import audioplayer.Constants;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
+import java.util.Collections;
 import java.util.ArrayList;
 
 public class GetTop5Playlists {
@@ -35,8 +35,13 @@ public class GetTop5Playlists {
      */
     public final void getTop5(final ArrayList<Playlist> playlists, final ObjectNode node) {
         ArrayNode resultsArray = objectMapper.createArrayNode();
-        playlists.sort(Comparator.comparingInt(Playlist::getFollowers).reversed());
+        //playlists.sort(Comparator.comparingInt(Playlist::getFollowers).reversed());
+        Collections.sort(playlists, Comparator
+                .comparingInt(Playlist::getFollowers) // by number of followers in reversed order
+                .reversed()
+                .thenComparingInt(Playlist::getTimestamp)); // by timestamp in ascending order
 
+        // Now your playlists ArrayList is sorted based on your criteria
         int size = Math.min(playlists.size(), Constants.getFive());
 
         for (int i = 0; i < size; i++) {
