@@ -10,4 +10,6 @@ public class Constants {
     private static int three = 3;
     @Getter @Setter
     private static int ninety = 90;
+    @Getter @Setter
+    private static int limit = -7000;
 }

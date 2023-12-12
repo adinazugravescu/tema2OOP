@@ -108,8 +108,6 @@ public final class DoPrev {
                                     message = "Returned to previous track successfully. The "
                                             + "current track is " + prevSong.getName() + ".";
                                     loader.setTimestamp(inputCommand.getTimestamp());
-                                } else {
-                                    message = "IDK";
                                 }
                             }
                         }

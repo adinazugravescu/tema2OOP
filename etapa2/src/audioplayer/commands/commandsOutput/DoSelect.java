@@ -75,11 +75,16 @@ public final class DoSelect {
                                     if (crt.getListOfusers().get(inputCommand.getItemNumber() - 1).
                                             getType().equals("artist")) {
                                         user.setCurrentPage("Artist page");
-                                        user.setUsersPage(crt.getListOfusers().
-                                                get(inputCommand.getItemNumber() - 1));
-                                        Output.select(newN, Select.message4(crt.nameOfResult(
-                                                inputCommand.getItemNumber() - 1)));
+                                    } else {
+                                        if (crt.getListOfusers().get(inputCommand.getItemNumber()
+                                                - 1).getType().equals("host")) {
+                                            user.setCurrentPage("Host page");
+                                        }
                                     }
+                                    user.setUsersPage(crt.getListOfusers().
+                                            get(inputCommand.getItemNumber() - 1));
+                                    Output.select(newN, Select.message4(crt.nameOfResult(
+                                            inputCommand.getItemNumber() - 1)));
                                 }
                             }
                         } else {

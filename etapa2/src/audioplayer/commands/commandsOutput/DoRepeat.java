@@ -31,6 +31,12 @@ public final class DoRepeat {
         String mode = ""; // "message" field in output will be message + mode
         for (Loaders loader : listOfLoaders) {
             if (loader.getUsername().equals(inputCommand.getUsername())) {
+                if (loader.getStats().getRemainedTime() == 0) {
+                    message = "Please load a source before setting the repeat status.";
+                    newN.put("message", message);
+                    outputs.add(newN);
+                    return;
+                }
                 load = 1;
                 message = "Repeat mode changed to "; // if user has something in load
                                                      // then we change the repeat mode

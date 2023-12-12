@@ -35,7 +35,9 @@ public final class DoNext {
         String message = "";
         for (Loaders loader : listOfLoaders) {
             if (loader.getUsername().equals((inputCommand.getUsername()))) {
-                load = 1;
+                if (loader.getStats().getRemainedTime() != 0) {
+                    load = 1;
+                }
                 if (loader.getSong() != null) { // if loader has a song, there is no next
                     if (loader.getStats().getRepeat().equals("No Repeat")) {
                         message = "Please load a source before skipping to the "

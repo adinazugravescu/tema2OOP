@@ -1,5 +1,7 @@
 package audioplayer.commands.userData;
 import java.util.HashMap;
+
+import fileio.input.EpisodeInput;
 import fileio.input.SongInput;
 
 import java.util.ArrayList;
@@ -53,5 +55,29 @@ public final class Verification {
             return false;
         }
         return true;
+    }
+
+    /**
+     *
+     * @param episodes
+     * @return
+     */
+    public static boolean podcast(final ArrayList<EpisodeInput> episodes) {
+        HashMap<String, Integer> episodeNameCount = new HashMap<>();
+        // Count occurrences of podcast names
+        for (EpisodeInput episode : episodes) {
+            String podcastName = episode.getName();
+            episodeNameCount.put(podcastName, episodeNameCount.getOrDefault(podcastName, 0) + 1);
+        }
+
+        // Check if there are more than two episodes with the same name
+        boolean aux = false; // auxiliary field that retains if there are more than 2 equal
+        for (HashMap.Entry<String, Integer> entry : episodeNameCount.entrySet()) {
+            if (entry.getValue() >= 2) {
+                aux = true;
+                break;
+            }
+        }
+        return aux;
     }
 }

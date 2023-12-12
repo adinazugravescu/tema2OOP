@@ -3,10 +3,12 @@ package audioplayer.commands.commandsOutput;
 import audioplayer.Constants;
 import audioplayer.commands.commandsInput.CommandsInput;
 import audioplayer.commands.player.Forward;
+import audioplayer.commands.player.LoadNext;
 import audioplayer.commands.player.Loaders;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.input.EpisodeInput;
+import fileio.input.SongInput;
 
 import java.util.ArrayList;
 
@@ -63,6 +65,32 @@ public final class DoForward {
                         message = "Please load a source before attempting to forward.";
                         listOfLoaders.remove(loader);
                         break;
+                    }
+                } else {
+                    if (loader.getAlbum() != null) {
+                        int time = 0;
+                        if (!loader.getStats().paused) { // album is on, verify if it still loads
+                            time = loader.getStats().getRemainedTime() - inputCommand.
+                                    getTimestamp() + loader.getTimestamp(); //update timestamp
+                            if (time <= 0) {
+                                // song finished, look for the next one
+                                String name = loader.getStats().getName();
+                                while (time <= 0) {
+                                    SongInput nextSong = LoadNext.forAlbum(loader.
+                                            getAlbum(), name);
+                                    if (nextSong != null) {
+                                        name = nextSong.getName();
+                                        time = nextSong.getDuration() + time;
+                                    } else {
+                                        time = 0;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (time == 0) {
+                                load = 0;
+                            }
+                        }
                     }
                 }
             }

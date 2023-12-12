@@ -5,6 +5,7 @@ import audioplayer.commands.player.Loaders;
 import audioplayer.commands.playlist.PlaylistOwners;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import fileio.input.SongInput;
 
 import java.util.ArrayList;
 
@@ -36,7 +37,7 @@ public final class DoAddRemove {
         for (Loaders loader : listOfLoaders) {
             if (loader.getUsername().equals(inputCommand.getUsername())) {
                 loaded = 1;
-                if (loader.getSong() == null) {
+                if (loader.getSong() == null && loader.getAlbum() == null) {
                     message = "The loaded source is not a song.";
                 } else {
                     for (PlaylistOwners owner : playlistOwners) {
@@ -47,18 +48,47 @@ public final class DoAddRemove {
                             } else {
                                 if (owner.getPlaylists().get(inputCommand.
                                         getPlaylistId() - 1).getSongs() != null) {
-                                    if (owner.getPlaylists().get(inputCommand.getPlaylistId() - 1).
-                                            getSongs().contains(loader.getSong())) {
-                                        owner.getPlaylists().get(inputCommand.getPlaylistId() - 1).
-                                                getSongs().remove(loader.getSong());
-                                        message = "Successfully removed "
-                                                + "from playlist.";
+                                    if (loader.getSong() != null) {
+                                        if (owner.getPlaylists().get(inputCommand.getPlaylistId()
+                                                - 1).getSongs().contains(loader.getSong())) {
+                                            owner.getPlaylists().get(inputCommand.getPlaylistId()
+                                                    - 1).getSongs().remove(loader.getSong());
+                                            message = "Successfully removed "
+                                                    + "from playlist.";
+                                        } else {
+                                            if (loader.getSong().getName() != null) {
+                                                owner.getPlaylists().get(inputCommand.
+                                                                getPlaylistId() - 1).
+                                                        getSongs().add(loader.getSong());
+                                                message = "Successfully added to playlist.";
+                                            }
+                                        }
                                     } else {
-                                        if (loader.getSong().getName() != null) {
-                                            owner.getPlaylists().get(inputCommand.
-                                                            getPlaylistId() - 1).
-                                                    getSongs().add(loader.getSong());
-                                            message = "Successfully added to playlist.";
+                                        if (loader.getAlbum() != null) {
+                                            SongInput song = new SongInput();
+                                            for (SongInput crt : loader.getAlbum().getSongs())  {
+                                                if (crt.getName().equals(loader.getStats().
+                                                        getName())) {
+                                                    song = crt;
+                                                    break;
+                                                }
+                                            }
+                                            if (owner.getPlaylists().get(inputCommand.
+                                                    getPlaylistId() - 1).getSongs().
+                                                    contains(song)) {
+                                                owner.getPlaylists().get(inputCommand.
+                                                                getPlaylistId() - 1).
+                                                        getSongs().remove(song);
+                                                message = "Successfully removed "
+                                                        + "from playlist.";
+                                            } else {
+                                                if (song.getName() != null) {
+                                                    owner.getPlaylists().get(inputCommand.
+                                                                    getPlaylistId() - 1).
+                                                            getSongs().add(song);
+                                                    message = "Successfully added to playlist.";
+                                                }
+                                            }
                                         }
                                     }
                                 }

@@ -50,7 +50,7 @@ public class GetTop5Songs {
                 return comparison; // if values are different, return the comparison result
             } else {
                 // if values are the same, maintain the original order in the list
-                return Integer.compare(list.indexOf(entry1), list.indexOf(entry2));
+                return Integer.compare(list.indexOf(entry2), list.indexOf(entry1));
             }
         });
 

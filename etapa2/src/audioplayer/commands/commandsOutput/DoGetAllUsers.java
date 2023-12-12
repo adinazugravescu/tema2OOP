@@ -34,6 +34,11 @@ public final class DoGetAllUsers {
                 resultsArray.add(user.getUsername());
             }
         }
+        for (UserInput user : database.getLibrary().getUsers()) {
+            if (user.getType().equals("host")) {
+                resultsArray.add(user.getUsername());
+            }
+        }
         newN.put("result", resultsArray);
         outputs.add(newN);
     }

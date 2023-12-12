@@ -9,6 +9,11 @@ public final class PodcastInput {
 
     public PodcastInput() {
     }
+    public PodcastInput(String n, String o, ArrayList<EpisodeInput> e) {
+        this.name = n;
+        this.owner = o;
+        this.episodes = e;
+    }
 
     public String getName() {
         return name;

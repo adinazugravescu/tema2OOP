@@ -2,6 +2,7 @@ package fileio.input;
 
 
 import audioplayer.commands.userData.Album;
+import audioplayer.commands.userData.Announcement;
 import audioplayer.commands.userData.Event;
 import audioplayer.commands.userData.Merch;
 import lombok.Getter;
@@ -17,6 +18,10 @@ public final class UserInput {
     private String type = "user";
     @Getter @Setter
     private ArrayList<Album> albums = new ArrayList<Album>();
+    @Getter @Setter
+    private ArrayList<PodcastInput> podcasts = new ArrayList<PodcastInput>();
+    @Getter @Setter
+    private ArrayList<Announcement> announcements = new ArrayList<Announcement>();
     @Getter @Setter
     private String currentPage = "HomePage";
     @Getter @Setter

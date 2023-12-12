@@ -69,6 +69,7 @@ public final class DoFollow {
                             newFollow.setFollower(inputCommand.getUsername());
                             newFollow.getPlaylists().add(select.getPlaylist());
                             message = "Playlist followed successfully.";
+                            followedPlaylists.add(newFollow);
                             select.getPlaylist().setFollowers(select.getPlaylist().
                                     getFollowers() + 1);
                         }

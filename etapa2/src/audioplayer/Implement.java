@@ -162,7 +162,7 @@ public class Implement {
                 case ("printCurrentPage") -> {
                     if (Check.ifOnline(inputCommand, database) == 1) {
                         DoPrintCurrentPage.exe(newN, inputCommand, outputs, prefferedSongs,
-                                followedPlaylists, database);
+                                followedPlaylists, database, playlistOwners);
                     } else {
                         Output.doOffline(newN, inputCommand, outputs);
                     }
@@ -181,7 +181,28 @@ public class Implement {
                 }
                 case ("deleteUser") -> {
                     DoDeleteUser.exe(newN, inputCommand, outputs, database, listOfLoaders,
-                            prefferedSongs);
+                            prefferedSongs, playlistOwners, followedPlaylists);
+                }
+                case ("addPodcast") -> {
+                    DoAddPodcast.exe(newN, inputCommand, outputs, database);
+                }
+                case ("removePodcast") -> {
+                    DoRemovePodcast.exe(newN, inputCommand, outputs, database, listOfLoaders);
+                }
+                case ("removeAlbum") -> {
+                    DoRemoveAlbum.exe(newN, inputCommand, outputs, database, listOfLoaders);
+                }
+                case ("changePage") -> {
+                    DoChangePage.exe(newN, inputCommand, outputs, database);
+                }
+                case ("addAnnouncement") -> {
+                    DoAddAnnouncement.exe(newN, inputCommand, outputs, database);
+                }
+                case ("removeAnnouncement") -> {
+                    DoRemoveAnnouncement.exe(newN, inputCommand, outputs, database);
+                }
+                case ("showPodcasts") -> {
+                    DoShowPodcasts.exe(newN, inputCommand, outputs, database);
                 }
                 default -> {
                     continue;

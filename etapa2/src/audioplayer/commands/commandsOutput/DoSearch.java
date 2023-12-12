@@ -120,6 +120,20 @@ public final class DoSearch {
                     inputCommand.getUsername(), searchbar.getNumberOfOc());
             current.setListOfalbums(searchbar.getResults());
             listOfResults.add(current);
+        } else if (inputCommand.getType().equals("host")) {
+            SearchHost searchbar = new SearchHost(inputCommand.getFilters(), library.getUsers());
+            searchbar.search();
+            ArrayNode resultsArray = objectMapper.createArrayNode();
+            for (UserInput results : searchbar.getResults()) {
+                resultsArray.add(results.getUsername());
+            }
+            Output.search(newN, searchbar.message(), resultsArray); // complete the ObjectNode with
+            // the info in searchbar
+            outputs.add(newN);
+            UserSearchResult current = new UserSearchResult(
+                    inputCommand.getUsername(), searchbar.getNumberOfOc());
+            current.setListOfusers(searchbar.getResults());
+            listOfResults.add(current);
         }
     }
 
