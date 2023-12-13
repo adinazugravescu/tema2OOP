@@ -12,11 +12,15 @@ public final class DoGetAllUsers {
     }
 
     /**
-     *
-     * @param newN
-     * @param inputCommand
-     * @param outputs
-     * @param database
+     * implements the logic for getAllUsers command
+     * (goes through users list first searching for 'user' type,
+     * then for 'artist' and last for 'host', listing their names)
+     * using :
+     * @param newN ObjectNode to store output fields
+     * @param inputCommand the current command
+     * @param outputs ArrayNode - main output node completed with current
+     *                       info (newN) at every command
+     * @param database database that provides updated library data and online users data
      */
     public static void exe(final ObjectNode newN, final CommandsInput inputCommand, final
     ArrayNode outputs, final Database database) {

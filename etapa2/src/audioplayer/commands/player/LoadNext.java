@@ -46,10 +46,10 @@ public final class LoadNext {
     }
 
     /**
-     *
-     * @param album
-     * @param name
-     * @return
+     * method searches for the next song in album
+     * @param album current album
+     * @param name of the current song in album
+     * @return next song or null in case of finalization
      */
     public static SongInput forAlbum(final Album album, final String name) {
         for (int i = 0; i < album.getSongs().size(); i++) {

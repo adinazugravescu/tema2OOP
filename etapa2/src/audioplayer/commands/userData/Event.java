@@ -3,6 +3,9 @@ package audioplayer.commands.userData;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * class for event entity
+ */
 public class Event {
     @Getter @Setter
     private String name;

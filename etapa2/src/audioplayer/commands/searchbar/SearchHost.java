@@ -16,6 +16,13 @@ public class SearchHost extends SearchBar {
         this.setFilters(f);
         this.users = i;
     }
+
+    /**
+     * filters the hosts in users records based on the name;
+     * after one filter applies, we add the current host to filteredHosts list
+     * we update the numberOfOc and the results accordingly (if there are more than 5 results,
+     * we get the first 5 in filteredHosts)
+     */
     @Override
     public final void search() {
         ArrayList<UserInput> filteredHosts = new ArrayList<UserInput>();

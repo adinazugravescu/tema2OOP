@@ -11,11 +11,14 @@ public final class DoChangePage {
     }
 
     /**
-     *
-     * @param newN
-     * @param inputCommand
-     * @param outputs
-     * @param database
+     * implements the logic for changePage command
+     * (if input command's nextPage is a valid option, it changes the user's current page)
+     * using :
+     * @param newN ObjectNode to store output fields
+     * @param inputCommand the current command
+     * @param outputs ArrayNode - main output node completed with current
+     *                       info (newN) at every command
+     * @param database database that provides updated library data and online users data
      */
     public static void exe(final ObjectNode newN, final CommandsInput inputCommand, final
     ArrayNode outputs, final Database database) {
@@ -31,7 +34,7 @@ public final class DoChangePage {
         }
         for (UserInput user : database.getLibrary().getUsers()) {
             if (inputCommand.getUsername().equals(user.getUsername())) {
-                    user.setCurrentPage(inputCommand.getNextPage());
+                    user.setCurrentPage(inputCommand.getNextPage()); // set current page
                     message = inputCommand.getUsername() + " accessed " + inputCommand.getNextPage()
                             + " successfully.";
             }

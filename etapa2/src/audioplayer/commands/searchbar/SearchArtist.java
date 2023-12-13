@@ -16,6 +16,13 @@ public class SearchArtist extends SearchBar {
         this.setFilters(f);
         this.users = i;
     }
+
+    /**
+     * filters the artists in users records based on the name;
+     * after one filter applies, we add the current artist to filteredArtists list
+     * we update the numberOfOc and the results accordingly (if there are more than 5 results,
+     * we get the first 5 in filteredArtists)
+     */
     @Override
     public final void search() {
         ArrayList<UserInput> filteredArtists = new ArrayList<UserInput>();

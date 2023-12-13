@@ -14,11 +14,14 @@ public final class DoAddAlbum {
     }
 
     /**
-     *
-     * @param newN
-     * @param inputCommand
-     * @param outputs
-     * @param database
+     * implements the logic for addAlbum command
+     * (goes through the list of users(artists) and builds the logic for the 5 conditions)
+     * using :
+     * @param newN ObjectNode to store output fields
+     * @param inputCommand the current command
+     * @param outputs ArrayNode - main output node completed with current
+     *                       info (newN) at every command
+     * @param database database that provides updated library data and online users data
      */
     public static void exe(final ObjectNode newN, final CommandsInput inputCommand, final
     ArrayNode outputs, final Database database) {
@@ -32,7 +35,7 @@ public final class DoAddAlbum {
                 exists = 1;
                 if (user.getType().equals("artist")) {
                     isArtist = 1;
-                    for (Album album : user.getAlbums()) {
+                    for (Album album : user.getAlbums()) { // check user's albums to find duplicate
                         if (album.getName().equals(inputCommand.getName())) {
                             message = inputCommand.getUsername() + " has another album with "
                                     + "the same name.";
@@ -55,7 +58,7 @@ public final class DoAddAlbum {
                         message = inputCommand.getUsername()
                                 + " has added new album successfully.";
                         for (SongInput song : inputCommand.getSongs()) {
-                            database.getLibrary().getSongs().add(song); // addnew songs in library
+                            database.getLibrary().getSongs().add(song); // add new songs in library
                         }
                     }
                     break;

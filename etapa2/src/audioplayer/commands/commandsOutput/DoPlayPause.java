@@ -1,7 +1,9 @@
 package audioplayer.commands.commandsOutput;
 
 import audioplayer.commands.commandsInput.CommandsInput;
-import audioplayer.commands.player.*;
+import audioplayer.commands.player.Loaders;
+import audioplayer.commands.player.PlayPause;
+import audioplayer.commands.player.LoadNext;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.input.EpisodeInput;

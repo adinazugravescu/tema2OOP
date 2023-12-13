@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 
+/**
+ * class created for database data management
+ */
 public final class Database {
     private static Database instance = null;
     @Getter
@@ -15,8 +18,8 @@ public final class Database {
     private LibraryInput library = new LibraryInput();
 
     /**
-     *
-     * @param onlineUsers
+     * setter for onlineUsers
+     * @param onlineUsers for initialization data
      */
     public void setOnlineUsers(final ArrayList<UserInput> onlineUsers) {
         ArrayList<UserInput> copy = new ArrayList<UserInput>();
@@ -31,8 +34,7 @@ public final class Database {
     }
 
     /**
-     *
-     * @return
+     * @return the instance if it exists or creates a new one and returns it then
      */
     public static Database getInstance() {
         if (instance == null) {

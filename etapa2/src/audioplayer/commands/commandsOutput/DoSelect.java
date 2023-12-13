@@ -70,6 +70,8 @@ public final class DoSelect {
                                 inputCommand.getItemNumber() - 1));
                     } else {
                         if (!crt.getListOfusers().isEmpty()) {
+                            // if user selects a user entity do not update newSelect
+                            // only change current user's page to what it is in search results
                             for (UserInput user : database.getLibrary().getUsers()) {
                                 if (user.getUsername().equals(inputCommand.getUsername())) {
                                     if (crt.getListOfusers().get(inputCommand.getItemNumber() - 1).

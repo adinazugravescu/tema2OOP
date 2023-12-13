@@ -15,10 +15,10 @@ import java.util.Collections;
 
 public class GetTop5Albums {
     /**
-     *
-     * @param users
-     * @param prefferedSongs
-     * @return
+     * builds a HashMap of every album and the total number of likes parsing every artist's album
+     * @param users in library
+     * @param prefferedSongs  list of owners and their liked songs
+     * @return a map: key = album name, value = total number of likes
      */
     public static HashMap<Album, Integer> getAlbumLikes(final ArrayList<UserInput> users, final
     ArrayList<PreferredSongs> prefferedSongs) {
@@ -40,9 +40,9 @@ public class GetTop5Albums {
     }
 
     /**
-     *
-     * @param likesOfAlbums
-     * @param node
+     * sort the map and get the first albums in descending order
+     * @param likesOfAlbums like management HashMap
+     * @param node output node
      */
     public final void getTop5(final HashMap<Album, Integer> likesOfAlbums, final ObjectNode
             node) {

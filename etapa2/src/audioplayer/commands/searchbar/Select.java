@@ -27,9 +27,9 @@ public final class Select {
     }
 
     /**
-     *
-     * @param name
-     * @return
+     * returns the message in case of user pre-search
+     * @param name of the selected user
+     * @return a String
      */
     public static String message4(final String name) {
         return "Successfully selected " + name + "'s page.";

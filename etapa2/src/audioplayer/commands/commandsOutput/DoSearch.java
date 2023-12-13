@@ -7,7 +7,12 @@ import audioplayer.commands.player.UserSearchResult;
 import audioplayer.commands.player.UserSelectResult;
 import audioplayer.commands.playlist.Playlist;
 import audioplayer.commands.playlist.PlaylistOwners;
-import audioplayer.commands.searchbar.*;
+import audioplayer.commands.searchbar.SearchAlbum;
+import audioplayer.commands.searchbar.SearchHost;
+import audioplayer.commands.searchbar.SearchArtist;
+import audioplayer.commands.searchbar.SearchPlaylist;
+import audioplayer.commands.searchbar.SearchPodcast;
+import audioplayer.commands.searchbar.SearchMelody;
 import audioplayer.commands.userData.Album;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -95,7 +100,7 @@ public final class DoSearch {
             SearchArtist searchbar = new SearchArtist(inputCommand.getFilters(),
                     library.getUsers());
             searchbar.search();
-            ArrayNode resultsArray = objectMapper.createArrayNode();
+            ArrayNode resultsArray = objectMapper.createArrayNode(); // artists names for output
             for (UserInput results : searchbar.getResults()) {
                 resultsArray.add(results.getUsername());
             }
@@ -109,12 +114,12 @@ public final class DoSearch {
         } else if (inputCommand.getType().equals("album")) {
             SearchAlbum searchbar = new SearchAlbum(inputCommand.getFilters(), library);
             searchbar.search();
-            ArrayNode resultsArray = objectMapper.createArrayNode();
+            ArrayNode resultsArray = objectMapper.createArrayNode(); // albums names for output
             for (Album results : searchbar.getResults()) {
                 resultsArray.add(results.getName());
             }
             Output.search(newN, searchbar.message(), resultsArray); // complete the ObjectNode with
-            // the info in searchbar
+                                                                    // the info in searchbar
             outputs.add(newN);
             UserSearchResult current = new UserSearchResult(
                     inputCommand.getUsername(), searchbar.getNumberOfOc());
@@ -123,12 +128,12 @@ public final class DoSearch {
         } else if (inputCommand.getType().equals("host")) {
             SearchHost searchbar = new SearchHost(inputCommand.getFilters(), library.getUsers());
             searchbar.search();
-            ArrayNode resultsArray = objectMapper.createArrayNode();
+            ArrayNode resultsArray = objectMapper.createArrayNode(); // host names for output
             for (UserInput results : searchbar.getResults()) {
                 resultsArray.add(results.getUsername());
             }
             Output.search(newN, searchbar.message(), resultsArray); // complete the ObjectNode with
-            // the info in searchbar
+                                                                    // the info in searchbar
             outputs.add(newN);
             UserSearchResult current = new UserSearchResult(
                     inputCommand.getUsername(), searchbar.getNumberOfOc());

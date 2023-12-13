@@ -19,6 +19,14 @@ public class SearchAlbum extends SearchBar {
         this.setInput(i);
         this.users = this.getInput().getUsers();
     }
+
+    /**
+     * filters the albums in users records based on the given filters;
+     * after one filter applies, we add the current album to filteredAlbums list
+     * if it is empty, if not we test the albums in this list with current filter;
+     * after applying all the filters, we update the numberOfOc and the results
+     * accordingly (if there are more than 5 results, we get the first 5 in filteredAlbums)
+     */
     @Override
     public final void search() {
         ArrayList<Album> filteredAlbums = new ArrayList<Album>();

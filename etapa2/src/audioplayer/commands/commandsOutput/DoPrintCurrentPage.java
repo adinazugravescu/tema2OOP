@@ -16,12 +16,18 @@ public final class DoPrintCurrentPage {
     }
 
     /**
-     *
-     * @param newN
-     * @param inputCommand
-     * @param outputs
-     * @param prefferedSongs
-     * @param followedPlaylists
+     * implements the logic for printCurrentPage command
+     * (depending on the user's currentPage, it lists info about
+     * the owner of that page)
+     * using :
+     * @param newN ObjectNode to store output fields
+     * @param inputCommand the current command
+     * @param outputs ArrayNode - main output node completed with current
+     *                       info (newN) at every command
+     * @param prefferedSongs list of owners and their liked songs
+     * @param followedPlaylists  list of users and what playlists have followed
+     * @param database database that provides updated library data and online users data
+     * @param playlistOwners  list of users and the owned playlists
      */
     public static void exe(final ObjectNode newN, final CommandsInput inputCommand, final
     ArrayNode outputs, final ArrayList<PreferredSongs> prefferedSongs, final

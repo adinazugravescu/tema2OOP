@@ -12,11 +12,14 @@ public final class DoRemoveAnnouncement {
     }
 
     /**
-     *
-     * @param newN
-     * @param inputCommand
-     * @param outputs
-     * @param database
+     * implements the logic for removeAnnouncement command
+     * (verifies if a host has current announcement and if it does, deletes it)
+     * using :
+     * @param newN ObjectNode to store output fields
+     * @param inputCommand the current command
+     * @param outputs ArrayNode - main output node completed with current
+     *                       info (newN) at every command
+     * @param database database that provides updated library data and online users data
      */
     public static void exe(final ObjectNode newN, final CommandsInput inputCommand, final
     ArrayNode outputs, final Database database) {

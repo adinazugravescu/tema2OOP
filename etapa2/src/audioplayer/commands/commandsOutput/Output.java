@@ -62,10 +62,11 @@ public final class Output {
     }
 
     /**
-     *
-     * @param newN
-     * @param inputCommand
-     * @param outputs
+     * implements the output structure for search in case of offline
+     * @param newN ObjectNode for formatting output
+     * @param inputCommand the current command
+     * @param outputs ArrayNode - main output node completed with current
+     *      *                       info (newN)
      */
     public static void doSearch(final ObjectNode newN, final CommandsInput inputCommand, final
     ArrayNode outputs) {
@@ -79,10 +80,11 @@ public final class Output {
     }
 
     /**
-     *
-     * @param newN
-     * @param inputCommand
-     * @param outputs
+     * output structure in case of offline user
+     * @param newN ObjectNode for formatting output
+     * @param inputCommand the current command
+     * @param outputs ArrayNode - main output node completed with current
+     *      *                       info (newN)
      */
     public static void doOffline(final ObjectNode newN, final CommandsInput inputCommand, final
     ArrayNode outputs) {

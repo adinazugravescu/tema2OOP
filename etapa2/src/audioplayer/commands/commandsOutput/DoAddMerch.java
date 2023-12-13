@@ -12,11 +12,14 @@ public final class DoAddMerch {
     }
 
     /**
-     *
-     * @param newN
-     * @param inputCommand
-     * @param outputs
-     * @param database
+     * implements the logic for addMerch command
+     * (goes through the list of users(artists) and builds the logic for the 5 conditions)
+     * using :
+     * @param newN ObjectNode to store output fields
+     * @param inputCommand the current command
+     * @param outputs ArrayNode - main output node completed with current
+     *                       info (newN) at every command
+     * @param database database that provides updated library data and online users data
      */
     public static void exe(final ObjectNode newN, final CommandsInput inputCommand, final
     ArrayNode outputs, final Database database) {
@@ -45,7 +48,7 @@ public final class DoAddMerch {
                             return;
                         }
                     }
-                    // all conditions verified, create and add event
+                    // all conditions verified, create and add merch
                     Merch newMerch = new Merch(inputCommand.getName(), inputCommand.
                             getDescription(), inputCommand.getPrice());
                     user.getMerches().add(newMerch);

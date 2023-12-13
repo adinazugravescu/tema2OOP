@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 
+/**
+ * class for album entity
+ */
 public class Album {
     @Getter @Setter
     private ArrayList<SongInput> songs = new ArrayList<SongInput>();

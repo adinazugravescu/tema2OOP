@@ -22,13 +22,17 @@ public final class DoDeleteUser {
     }
 
     /**
-     *
-     * @param newN
-     * @param inputCommand
-     * @param outputs
-     * @param database
-     * @param listOfLoaders
-     * @param preferredSongs
+     * implements the logic for deleteUser command
+     * (verifies if the subject of removal has interaction with other users
+     * and if it does, delete all records of this user)
+     * using :
+     * @param newN ObjectNode to store output fields
+     * @param inputCommand the current command
+     * @param outputs ArrayNode - main output node completed with current
+     *                       info (newN) at every command
+     * @param database database that provides updated library data and online users data
+     * @param listOfLoaders list of users and what they have in load
+     * @param preferredSongs list of owners and their liked songs
      */
     public static void exe(final ObjectNode newN, final CommandsInput inputCommand, final
     ArrayNode outputs, final Database database, final ArrayList<Loaders> listOfLoaders, final
@@ -44,17 +48,21 @@ public final class DoDeleteUser {
                 int interaction = 0; // auxiliary field that retains if the current user
                                     // has an interaction in the app
                 for (UserInput auxUser : database.getLibrary().getUsers()) {
+                    // a user being on the subject's page means interaction
                     if (auxUser.getUsersPage().getUsername().equals(user.getUsername())
                         && !auxUser.getCurrentPage().equals("HomePage")
                         && !auxUser.getCurrentPage().equals("Home")) {
                         interaction = 1;
                     }
                 }
-                for (Loaders loader : listOfLoaders) {
+                for (Loaders loader : listOfLoaders) { // check if someone has sth
+                                                    // in load related to the user
                     if (loader.getSong() != null && loader.getSong().getArtist().
                                 equals(inputCommand.getUsername())) {
+                        // a song whose artist is the subject
                         int time = loader.getStats().getRemainedTime() - inputCommand.
                                 getTimestamp() + loader.getTimestamp();
+                        // check if it still loads
                         if (time > 0 || (time <= 0 && loader.getStats().getRepeat().equals(
                                 "Repeat Once") && time > Constants.getLimit())) {
                                 interaction = 1;
@@ -63,7 +71,9 @@ public final class DoDeleteUser {
                         } else {
                         if (loader.getAlbum() != null && loader.getAlbum().getOwner().
                                 equals(inputCommand.getUsername())) {
+                            // an album whose owner is the subject
                             int time = 0;
+                            // check if it still loads
                             if (!loader.getStats().paused) { // find the current track
                                 time = loader.getStats().getRemainedTime() - inputCommand.
                                         getTimestamp() + loader.getTimestamp(); //update timestamp
@@ -90,7 +100,9 @@ public final class DoDeleteUser {
                         } else {
                             if (loader.getPodcast() != null && loader.getPodcast().getOwner().
                                     equals(inputCommand.getUsername())) {
+                                // a podcast whose owner is the subject
                                 int time = 0;
+                                // check if it still loads
                                 if (!loader.getStats().paused) { // find the current episode
                                     time = loader.getStats().getRemainedTime() - inputCommand.
                                             getTimestamp() + loader.getTimestamp();
@@ -117,7 +129,9 @@ public final class DoDeleteUser {
                             } else {
                                 if (loader.getPlaylist() != null && loader.getPlaylist().
                                         getOwner().equals(inputCommand.getUsername())) {
+                                    // a playlist whose owner is the subject
                                     int time = 0;
+                                    // check if it still loads
                                     if (!loader.getStats().paused) { // find the current track
                                         time = loader.getStats().getRemainedTime() - inputCommand.
                                                 getTimestamp() + loader.getTimestamp();
@@ -150,13 +164,14 @@ public final class DoDeleteUser {
                         }
                     }
                 }
-                if (interaction == 0) {
+                if (interaction == 0) { // delete the user
                     database.getLibrary().getSongs().removeIf(song -> song.getArtist().equals(user.
-                            getUsername()));
+                            getUsername())); // delete if there is song record related
                     for (PreferredSongs crt : preferredSongs) {
                         crt.getSongs().removeIf(song -> song.getArtist().equals(user.
-                                getUsername()));
+                                getUsername())); // delete songs related from others' liked songs
                     }
+                    // delete if user has playlists
                     playlistOwners.removeIf(item -> item.getOwner().equals(user.getUsername()));
                     // delete user followed playlists record
                     for (FollowedPlaylists follow : followedPlaylists) {
@@ -174,9 +189,9 @@ public final class DoDeleteUser {
                     }
                     followedPlaylists.removeIf(item -> item.getFollower().
                             equals(user.getUsername()));
-                    database.getLibrary().getUsers().remove(user);
+                    database.getLibrary().getUsers().remove(user); // remove user from library
                     database.getOnlineUsers().removeIf(u -> u.getUsername().equals(user.
-                            getUsername()));
+                            getUsername())); // remove user from online data
                     message = inputCommand.getUsername() + " was successfully deleted.";
                 } else {
                     message = inputCommand.getUsername() + " can't be deleted.";

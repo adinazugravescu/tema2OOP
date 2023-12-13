@@ -3,6 +3,9 @@ package audioplayer.commands.userData;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * class for announcement entity
+ */
 public class Announcement {
     @Getter @Setter
     private String name;

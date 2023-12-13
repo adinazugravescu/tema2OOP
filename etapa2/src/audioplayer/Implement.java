@@ -1,8 +1,14 @@
 package audioplayer;
 import audioplayer.commands.commandsInput.CommandsInput;
 import audioplayer.commands.commandsOutput.*;
-import audioplayer.commands.player.*;
-import audioplayer.commands.playlist.*;
+import audioplayer.commands.player.Loaders;
+import audioplayer.commands.player.PodcastStats;
+import audioplayer.commands.player.UserSelectResult;
+import audioplayer.commands.player.UserSearchResult;
+import audioplayer.commands.playlist.PlaylistOwners;
+import audioplayer.commands.playlist.FollowedPlaylists;
+import audioplayer.commands.playlist.PreferredSongs;
+import audioplayer.commands.playlist.UnshuffledSongs;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.input.LibraryInput;
@@ -33,12 +39,14 @@ public class Implement {
     }
 
     /**
-     * this method uses a couple of ArrayList objects that act as a minimal database;
+     * this method uses a couple of ArrayList objects that act as a minimal database
+     * (from the first stage of the project) and an actual database(Singleton implementation)
+     * that retains the library input data and the online users;
      * based on the list of commands, it uses a switch with cases that refer to the
-     * type of command given at the current node, and call the static methods implemented
-     * in the 'Do' classes for each command to process the data, build the logic for
-     * the 'ouputs' and for the ArrayList objects that are mandatory for further
-     * commands implementation
+     * type of command given at the current node, and calls the static methods implemented
+     * in the 'Do' classes for each command to process the data, builds the logic for
+     * the 'outputs' and updates the ArrayList objects and the database that are mandatory for
+     * further commands implementation
      */
     public final void exe() {
         ObjectMapper objectMapper = new ObjectMapper();

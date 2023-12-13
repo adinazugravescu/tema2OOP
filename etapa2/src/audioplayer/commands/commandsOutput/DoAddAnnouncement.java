@@ -12,11 +12,14 @@ public final class DoAddAnnouncement {
     }
 
     /**
-     *
-     * @param newN
-     * @param inputCommand
-     * @param outputs
-     * @param database
+     * implements the logic for addAnnouncement command
+     * (goes through the list of users(hosts) and builds the logic for the 4 conditions)
+     * using :
+     * @param newN ObjectNode to store output fields
+     * @param inputCommand the current command
+     * @param outputs ArrayNode - main output node completed with current
+     *                       info (newN) at every command
+     * @param database database that provides updated library data and online users data
      */
     public static void exe(final ObjectNode newN, final CommandsInput inputCommand, final
     ArrayNode outputs, final Database database) {
@@ -39,6 +42,7 @@ public final class DoAddAnnouncement {
                             return;
                         }
                     }
+                    // create and add announcement
                     Announcement newAnnouncement = new Announcement(inputCommand.getName(),
                             inputCommand.getDescription());
                     user.getAnnouncements().add(newAnnouncement);

@@ -62,11 +62,11 @@ public final class LoadPrev {
     }
 
     /**
-     *
-     * @param album
-     * @param name
-     * @param passedTime
-     * @return
+     * implements the logic for prev
+     * @param album current in load
+     * @param name of the current song in album
+     * @param passedTime of the song in load
+     * @return the needed song
      */
     public static SongInput forAlbum(final Album album, final String name,
                                      final int passedTime) {

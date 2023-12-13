@@ -227,7 +227,7 @@ public final class DoStatus {
                                                             getName());
                                                     if (nextSong == null && !loader.getAlbum().
                                                             getSongs().isEmpty()) {
-                                                        // playlists starts from the beginning
+                                                        // album starts from the beginning
                                                         nextSong = loader.getAlbum().getSongs().
                                                                 get(0);
                                                     }

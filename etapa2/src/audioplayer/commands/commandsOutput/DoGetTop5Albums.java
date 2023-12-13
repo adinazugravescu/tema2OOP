@@ -16,21 +16,25 @@ public final class DoGetTop5Albums {
     }
 
     /**
-     *
-     * @param newN
-     * @param inputCommand
-     * @param outputs
-     * @param database
-     * @param prefferedSongs
+     * implements the logic for getTop5Albums command
+     * (calculates the number of total likes per user's album and sorts them)
+     * using :
+     * @param newN ObjectNode to store output fields
+     * @param inputCommand the current command
+     * @param outputs ArrayNode - main output node completed with current
+     *                       info (newN) at every command
+     * @param database database that provides updated library data and online users data
+     * @param preferredSongs list of owners and their liked songs
      */
     public static void exe(final ObjectNode newN, final CommandsInput inputCommand, final
-    ArrayNode outputs, final Database database, final ArrayList<PreferredSongs> prefferedSongs) {
+    ArrayNode outputs, final Database database, final ArrayList<PreferredSongs> preferredSongs) {
         newN.put("command", "getTop5Albums");
         newN.put("timestamp", inputCommand.getTimestamp());
         GetTop5Albums get = new GetTop5Albums();
         HashMap<Album, Integer> albumLikes = GetTop5Albums.getAlbumLikes(database.getLibrary().
-                getUsers(), prefferedSongs);
-        get.getTop5(albumLikes, newN);
+                getUsers(), preferredSongs); // get every album(key) and its likes(value)
+        get.getTop5(albumLikes, newN); // sort albumLikes and get the first 5/size albums
+                                    // + formats the ObjectNode
         outputs.add(newN);
     }
 }
